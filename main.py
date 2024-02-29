@@ -1,3 +1,4 @@
+import pickle
 from classes import AddressBook, Record
 
 # Обробник помилок 
@@ -16,6 +17,19 @@ def input_error(func):
             return f"An unexpected error occured: Error: {e}"
         
     return inner
+
+
+def save_data(book, filename="addressbook.pkl"):
+    with open(filename, "wb") as f:
+        pickle.dump(book, f)
+
+
+def load_data(filename="addressbook.pkl"):
+    try:
+        with open(filename, "rb") as f:
+            return pickle.load(f)
+    except FileNotFoundError:
+        return AddressBook()
 
 
 @input_error
@@ -107,7 +121,7 @@ Commands:
 
 
 def main():
-    book = AddressBook()
+    book = load_data()
     print("Welcome to the assistant bot!")
     print(commands)
     while True:
@@ -115,6 +129,7 @@ def main():
         command, *args = parse_input(user_input)
 
         if command in ['close', 'quit', 'exit']:
+            save_data(book)
             print("Good bye!")
             break
         

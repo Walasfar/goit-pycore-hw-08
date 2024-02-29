@@ -42,7 +42,8 @@ class Birthday(Field):
         if not self.is_valid(value):
             raise ValueError
         else:
-            self.__value = dt.strptime(value, '%d.%m.%Y')
+            self.__value = dt.strptime(value, '%d.%m.%Y').date()
+
 
 class Name(Field):
     
